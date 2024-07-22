@@ -1,0 +1,9 @@
+%dw 2.0
+
+type auto_c2228a99_2fc7_4588_8dc4_4f506a209189_Output_Payload = {|
+  SUM: Any, 
+  DIFFERENCE: Any, 
+  PRODUCT: Number, 
+  FACTOR: Number
+|}
+
