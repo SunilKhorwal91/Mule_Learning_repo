@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_81598f93_a8b9_4b21_b87f_bf7982ddf41f_Output_Payload = Array<"mango" | "pineapple" | "melon" | "kiwi" | "papaya">
+
