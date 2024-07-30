@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8ce416ab-56ac-4ff9-8ed6-3375f85867e5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="getString" doc:id="9729aba8-b9d9-42c6-822d-bbe13697c9c2" >
+		<http:listener doc:name="HTTP GET " doc:id="008ac98b-c0cc-4d89-92f6-86eba2627fca" config-ref="HTTP_Listener_config" path="/assert-string" allowedMethods="GET"/>
+		<set-payload value='#[%dw 2.0&#10;&#10;&#10;output text/plain&#10;---&#10;"Mulesoft String Test"]' doc:name="Set Payload - String" doc:id="01854935-c3ac-4806-9874-cd985090c56f" />
+		<logger level="INFO" doc:name="Log Payload" doc:id="039328c0-58bf-4be7-998d-d87ec03e9c8e" message="#[payload]"/>
+	</flow>
+	<flow name="getJSONObject" doc:id="062aafa4-176c-45ff-b567-39906a4b6d8b" >
+		<http:listener doc:name="HTTP GET" doc:id="cdfb9357-dda2-4e3c-9a2a-cf955f7958d5" config-ref="HTTP_Listener_config" path="/assert-json" allowedMethods="GET"/>
+		<set-payload value='#[%dw 2.0&#10;&#10;&#10;output application/json&#10;---&#10;{&#10;	"name": "Madonna",&#10;	"Hospital": "City",&#10;	"Category": "gynaecology",&#10;	"availability": "9.00 a.m - 11.00 a.m",&#10;	"fee": "500"&#10;}]' doc:name="Set Payload - JSON" doc:id="19e4de6f-e1a5-4b57-a600-ff09b357897e" />
+		<logger level="INFO" doc:name="Log Payload" doc:id="fe6ade20-d6da-49f2-8b94-9dc8ace63f90" message="#[payload]"/>
+	</flow>
+	<flow name="getArray" doc:id="b9c8c367-eb05-44a5-be0b-59ec80851bd6" >
+		<http:listener doc:name="HTTP GET" doc:id="1ad93f4d-12ec-408b-b192-12f433ea8950" config-ref="HTTP_Listener_config" path="/assert-array" allowedMethods="GET"/>
+		<set-payload value='#[["Mulesoft","Cristiano Ronaldo","Bill Gates","Sunil Khorwal"]]' doc:name="Set Payload - Array" doc:id="13b444ef-b5a8-4677-b7a2-3b69c26abc78" />
+		<logger level="INFO" doc:name="Log Payload" doc:id="92e8a945-ce7e-4137-ad08-b40df353cad9" message="#[payload]"/>
+	</flow>
+</mule>

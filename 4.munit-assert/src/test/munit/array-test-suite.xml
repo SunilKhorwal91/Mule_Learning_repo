@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="4.munit-assert-test-suite.xml" />
+	<munit:test name="payloadContainsMulesoftSuccessTestCase" doc:id="fd066d1e-87b0-47cb-848d-fe92afc66ca6" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getArray" doc:id="76af2671-80b3-49c6-83e6-b145f762a4e9" name="getArray"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that - Mulesoft String Exists" doc:id="fef4f655-3459-4ae0-b61d-0485fc90aa93" expression="#[payload]" is='#[MunitTools::hasItem("Mulesoft")]' message='#["Element does not exist in the array"]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="payloadContainsPortugalInSuccessTestCase" doc:id="dad737b7-a3ce-4445-a7d4-805be72bdf1f" expectedErrorDescription="INVALID ELMENT">
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getArray" doc:id="854d01bf-203e-487b-aa82-5116167f6530" name="getArray"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that - Portugal string does not exist" doc:id="f3a08cca-6eba-4395-a261-98629f718d04" message='#["INVALID ELMENT"]' expression="#[payload]" is='#[MunitTools::hasItem("Portugal")]'/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
