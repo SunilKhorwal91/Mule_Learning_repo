@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="createClientInLisbon" doc:id="f9a9a3cb-ec55-45c0-a685-ced48bbd5d00" >
+		<http:listener doc:name="HTTP POST" doc:id="c2701c1a-ddbc-47f4-b019-76a7fbed37cd" config-ref="HTTP_Listener_config" allowedMethods="POST" path="/createClient"/>
+		<logger level="INFO" doc:name="Log START" doc:id="8b5907e1-1d22-49bd-9ae5-19f1f4dae731" message='#["Log START"]'/>
+		<flow-ref doc:name="Flow Reference - validateLisbonDistrict" doc:id="3c250f85-0c0a-4d2b-a33d-8311a49073f6" name="validateLisbonDistrict"/>
+		<flow-ref doc:name="Flow Reference - generateClientUUID" doc:id="61271d17-c1d6-43f8-ac45-d0a667191bbb" name="generateClientUUID"/>
+		<set-payload value="#[%dw 2.0&#10;&#10;&#10;output application/json&#10;---&#10;vars.validateClient]" doc:name="Set Payload - clientUUID" doc:id="40db1845-4f1c-411b-adbf-6ca53970439e" />
+		<logger level="INFO" doc:name="Log END" doc:id="4fa0abc1-1425-4663-8818-e719a80e7840" message='#["Log END"]'/>
+	</flow>
+	<sub-flow name="validateLisbonDistrict" doc:id="672a6131-6384-459b-b603-fbe723d145bd" >
+		<choice doc:name="Choice" doc:id="965748e8-38ee-40c2-b73b-6297fb513b43" >
+			<when expression='#[payload.district == "Lisbon"]' >
+				<set-variable value="#[true]" doc:name="Set Variable - validateClient TRUE" doc:id="ecf0e551-19b1-469a-8871-5efd39cc4958" variableName="validateClient" />
+			</when>
+			<otherwise >
+				<set-variable value="#[false]" doc:name="Set Variable - validateClient FALSE" doc:id="e1c6da9e-a920-4c58-9ab5-230dbe1a0d23" variableName="validateClient "/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="generateClientUUID" doc:id="a6fc57f8-1f67-4269-991d-5046e567b910" >
+		<logger level="INFO" doc:name="Log vars.validateClient" doc:id="4ba97050-a650-4b00-af2b-b5de623d6e3a" message="#[vars.validateClient]"/>
+		<choice doc:name="Choice" doc:id="bdb6e368-0f24-406e-8119-6f05e809d183" >
+			<when expression="#[vars.validateClient == true]">
+				<set-variable value="#[%dw 2.0&#10;&#10;&#10;output application/json&#10;---&#10;uuid()]" doc:name="Set Variable - clientUUID" doc:id="62958602-7b5c-4563-9b75-88eb56ae6aa4" variableName="clientUUID"/>
+			</when>
+			<otherwise>
+				<raise-error doc:name="Raise error" doc:id="e96533af-8df7-4861-947b-c8ea080f37a2" type="CLIENT:INVALID_DATA" description='"INVALID CLIENT DATA"'/>
+			</otherwise>
+		</choice>
+	</sub-flow>
+</mule>
