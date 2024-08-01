@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_e506fc52_6e70_4dae_86a3_dfdcf39b3398_Input_Payload = Array<{|  key: String,   value: String|}>
+

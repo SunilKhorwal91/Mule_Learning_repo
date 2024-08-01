@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_6e049210_5060_4ed2_92b4_c35cc54b2b70_Output_Payload = {| Greetings: Any |}
+

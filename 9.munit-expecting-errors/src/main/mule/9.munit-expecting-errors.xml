@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="storeKeyValuePair" doc:id="e506fc52-6e70-4dae-86a3-dfdcf39b3398" >
+		<os:store doc:name="Store key-value Pair" doc:id="072154c2-500c-4977-9113-edcbd50a3a9a" key="#[payload.key]">
+			<os:value ><![CDATA[#[payload.value]]]></os:value>
+		</os:store>
+		<logger level="INFO" doc:name="Log END" doc:id="c59ff8a1-5aca-4341-b86e-b99f147016a5" message='#["Log END"]'/>
+	</flow>
+	<flow name="sayGreetings" doc:id="6e049210-5060-4ed2-92b4-c35cc54b2b70" >
+		<set-variable value="#[payload.firstName default null]" doc:name="Set Variable - firstName" doc:id="3f7d0d45-95b8-40d9-8afb-63abeef8c36d" variableName="firstName"/>
+		<ee:transform doc:name="Transform Message" doc:id="1190a12e-4f1c-48c7-872c-ea665f79082a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+
+output application/json
+---
+{
+	"Greetings": "Welcome " ++ vars.firstName
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log GREETINGS" doc:id="b2ce5f3e-94e5-467a-9974-762d4892239e" message="#[payload]"/>
+		<logger level="INFO" doc:name="Log END" doc:id="5f764cce-a476-4fa3-b672-5dd310524cd3" message='#["Log END"]'/>
+	</flow>
+</mule>
